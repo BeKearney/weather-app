@@ -1,14 +1,22 @@
-from chalice import Chalice
+from chalice import Chalice, Rate
 import requests
+import boto3
+import time
+import json
 
 app = Chalice(app_name='weather-app')
 
+'''
+Return Weather Data for Montreal
+'''
 @app.route('/')
 def index():
     response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Montreal&appid=9ee255b8e671643ab089e28c1ef7a303")
     data = response.json()
     return data
-
+'''
+Return Weather Data for the City defined in the Route
+'''
 @app.route('/{city}')
 def weatherByCityName(city):
     url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid=9ee255b8e671643ab089e28c1ef7a303"
@@ -16,23 +24,39 @@ def weatherByCityName(city):
     response = requests.get(url)
     data = response.json()
     return data
+'''
+Uploads curent weather data to S3 every minute
+'''
+@app.schedule(Rate(5, unit=Rate.MINUTES))
+def periodic_task(event):
+    response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Montreal&appid=9ee255b8e671643ab089e28c1ef7a303")
+    data = response.json()
+    name = str(round(time.time()))
 
-# The view function above will return {"hello": "world"}
-# whenever you make an HTTP GET request to '/'.
-#
-# Here are a few more examples:
-#
-# @app.route('/hello/{name}')
-# def hello_name(name):
-#    # '/hello/james' -> {"hello": "james"}
-#    return {'hello': name}
-#
-# @app.route('/users', methods=['POST'])
-# def create_user():
-#     # This is the JSON body the user sent in their POST request.
-#     user_as_json = app.current_request.json_body
-#     # We'll echo the json body back to the user in a 'user' key.
-#     return {'user': user_as_json}
-#
-# See the README documentation for more examples.
-#
+    s3 = boto3.client('s3')
+    f = open("weatherdata", "w")
+    f.write(json.dumps(data))
+    f.close()
+
+    try:
+        s3.upload_file("weatherdata", "weather-app-data", name)
+        return {"Success": "True"}
+    except:
+        return {"Success": "False"}
+
+@app.route('/testS3')
+def test_S3():
+    response = requests.get("http://api.openweathermap.org/data/2.5/weather?q=Montreal&appid=9ee255b8e671643ab089e28c1ef7a303")
+    data = response.json()
+    name = str(round(time.time()))
+
+    s3 = boto3.client('s3')
+    f = open("weatherdata", "w")
+    f.write(json.dumps(data))
+    f.close()
+
+    try:
+        s3.upload_file("weatherdata", "weather-app-data", name)
+        return {"Success": "True"}
+    except:
+        return {"Success": "False"}

@@ -1,6 +1,7 @@
 astroid==2.4.2
 attrs==19.3.0
 botocore==1.17.43
+boto3==1.14.43
 certifi==2020.6.20
 chalice==1.17.0
 chardet==3.0.4
