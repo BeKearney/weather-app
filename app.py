@@ -31,10 +31,11 @@ def periodic_task(event):
     f.write(json.dumps(data))
     f.close()
 
-    try:
-        s3.upload_file("/tmp/weatherdata", "weather-app-data", name)
-        return {"Success": "True"}
-    except:
-        return {"Success": "False"}
-
-
+    s3.upload_file("/tmp/weatherdata", "weather-app-data", name)
+'''
+Whenever weather data is uploaded to S3, insert it into dynamo DB
+'''
+@app.on_s3_event(bucket='weather-app-data')
+def file_uploaded(event):
+    objName = event.key
+    print(objName)
