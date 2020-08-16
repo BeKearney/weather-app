@@ -5,6 +5,7 @@ import time
 import json
 
 app = Chalice(app_name='weather-app')
+s3 = boto3.client('s3', region_name='ca-central-1')
 
 '''
 Return Weather Data for Montreal
@@ -33,13 +34,12 @@ def periodic_task(event):
     data = response.json()
     name = str(round(time.time()))
 
-    s3 = boto3.client('s3')
-    f = open("weatherdata", "w")
+    f = open("/tmp/weatherdata", "w")
     f.write(json.dumps(data))
     f.close()
 
     try:
-        s3.upload_file("weatherdata", "weather-app-data", name)
+        s3.upload_file("/tmp/weatherdata", "weather-app-data", name)
         return {"Success": "True"}
     except:
         return {"Success": "False"}
@@ -50,13 +50,12 @@ def test_S3():
     data = response.json()
     name = str(round(time.time()))
 
-    s3 = boto3.client('s3')
-    f = open("weatherdata", "w")
+    f = open("/tmp/weatherdata", "w")
     f.write(json.dumps(data))
     f.close()
 
     try:
-        s3.upload_file("weatherdata", "weather-app-data", name)
+        s3.upload_file("/tmp/weatherdata", "weather-app-data", name)
         return {"Success": "True"}
     except:
         return {"Success": "False"}
