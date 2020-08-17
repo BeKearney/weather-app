@@ -1,5 +1,5 @@
 .chalice/deployments/
 .chalice/venv/
 weatherdata
-__pycache__
-chaclicelib/__pycache__
+__pycache__/
+chaclicelib/__pycache__/
