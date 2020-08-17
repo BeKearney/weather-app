@@ -2,6 +2,7 @@
 module for dynamodb funcitons for the weather-data table
 '''
 import boto3
+import json
 
 dynamodb = boto3.resource('dynamodb')
 table = dynamodb.Table('weather-data')
@@ -24,6 +25,7 @@ def getLatest():
 takes as input the item id and the json data and inserts it in the table
 '''
 def put(id, data):
+    ttl = int(id) + 432000
     table.put_item(
         Item={
             'time': id,
@@ -36,5 +38,6 @@ def put(id, data):
             'low': round(data['main']['temp_min'] - 273),
             'temp': round(data['main']['temp'] - 273),
             'weather': data['weather'][0]['main'],
+            'TTL': str(ttl)
         }
     )
