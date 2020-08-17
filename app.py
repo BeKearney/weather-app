@@ -46,10 +46,15 @@ def file_uploaded(event):
     objName = event.key
     data = "{}"
 
-    with open('/tmp/weatherdownload', 'wb') as f:
-        s3.download_fileobj('weather-app-data', objName, f)
+    try:
+        with open('/tmp/weatherdownload', 'wb') as f:
+            s3.download_fileobj('weather-app-data', objName, f)
     
-    with open('/tmp/weatherdownload', 'r') as f:
-        data = json.loads(f.read())
-    
+        with open('/tmp/weatherdownload', 'r') as f:
+            data = json.loads(f.read())
+    except:
+        app.log.error("error retrieving S3 data")
+        data = '{"name":"Error retrieving data"}'
+
+
     dynamo.put(objName, data)

@@ -1,10 +1,10 @@
 {
   "resources": [
     {
-      "name": "default-role",
+      "name": "periodic_task_role",
       "resource_type": "iam_role",
-      "role_arn": "arn:aws:iam::233750789338:role/weather-app-dev",
-      "role_name": "weather-app-dev"
+      "role_arn": "arn:aws:iam::233750789338:role/weather-app-dev-periodic_task",
+      "role_name": "weather-app-dev-periodic_task"
     },
     {
       "name": "periodic_task",
@@ -17,6 +17,12 @@
       "rule_name": "weather-app-dev-periodic_task-event"
     },
     {
+      "name": "file_uploaded_role",
+      "resource_type": "iam_role",
+      "role_arn": "arn:aws:iam::233750789338:role/weather-app-dev-file_uploaded",
+      "role_name": "weather-app-dev-file_uploaded"
+    },
+    {
       "name": "file_uploaded",
       "resource_type": "lambda_function",
       "lambda_arn": "arn:aws:lambda:ca-central-1:233750789338:function:weather-app-dev-file_uploaded"
@@ -26,6 +32,12 @@
       "resource_type": "s3_event",
       "bucket": "weather-app-data",
       "lambda_arn": "arn:aws:lambda:ca-central-1:233750789338:function:weather-app-dev-file_uploaded"
+    },
+    {
+      "name": "api_handler_role",
+      "resource_type": "iam_role",
+      "role_arn": "arn:aws:iam::233750789338:role/weather-app-dev-api_handler",
+      "role_name": "weather-app-dev-api_handler"
     },
     {
       "name": "api_handler",
