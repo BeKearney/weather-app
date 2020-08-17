@@ -1,5 +1,5 @@
 from chalice import Chalice, Rate
-from chalicelib import req
+from chalicelib import req, dynamo
 import boto3
 import time
 import json
@@ -38,4 +38,12 @@ Whenever weather data is uploaded to S3, insert it into dynamo DB
 @app.on_s3_event(bucket='weather-app-data')
 def file_uploaded(event):
     objName = event.key
-    print(objName)
+    data = "{}"
+
+    with open('/tmp/weatherdownload', 'wb') as f:
+        s3.download_fileobj('weather-app-data', objName, f)
+    
+    with open('/tmp/weatherdownload', 'r') as f:
+        data = json.loads(f.read())
+    
+    dynamo.put(objName, data)
