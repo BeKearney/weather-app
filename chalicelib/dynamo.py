@@ -18,7 +18,7 @@ gets the latest record from the table
 '''
 def getLatest():
     response = table.scan(Limit=1, Select='ALL_ATTRIBUTES')
-    return response
+    return response['Items'][0]
 
 '''
 takes as input the item id and the json data and inserts it in the table
@@ -37,4 +37,3 @@ def put(id, data):
             'weather': data['weather'][0]['main'],
         }
     )
-
