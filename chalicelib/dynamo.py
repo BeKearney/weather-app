@@ -38,6 +38,6 @@ def put(id, data):
             'low': round(data['main']['temp_min'] - 273),
             'temp': round(data['main']['temp'] - 273),
             'weather': data['weather'][0]['main'],
-            'TTL': str(ttl)
+            'TTL': int(ttl)
         }
     )
