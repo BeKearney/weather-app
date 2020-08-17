@@ -25,7 +25,7 @@ def getLatest():
 takes as input the item id and the json data and inserts it in the table
 '''
 def put(id, data):
-    ttl = int(id) + 432000
+    ttl = int(id) + 43200
     table.put_item(
         Item={
             'time': id,
