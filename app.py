@@ -14,6 +14,12 @@ Return Weather Data for Montreal
 def index():
     return req.request()
 '''
+Return Latest Montreal Weather from Dynamo
+'''
+@app.route("/currentweather")
+def current_weather():
+    return dynamo.getLatest()
+'''
 Return Weather Data for the City defined in the Route
 '''
 @app.route('/{city}')
