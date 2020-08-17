@@ -29,6 +29,7 @@ def put(id, data):
             'time': id,
             'city': data['name'],
             'description': data['weather'][0]['description'],
+            'icon': data['weather'][0]['icon'],
             'feel': round(data['main']['feels_like'] - 273),
             'high': round(data['main']['temp_max'] - 273),
             'humidity': data['main']['humidity'],
