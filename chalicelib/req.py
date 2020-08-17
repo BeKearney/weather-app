@@ -2,17 +2,18 @@
 Module for requests to open weather API
 '''
 import requests
+import os
+
+url = os.environ["url"] + "q={}&" + os.environ["api_key"]
 
 '''
 returns the response for openweather queried for Montreal as the city
 '''
 def request():
-    return requests.get("http://api.openweathermap.org/data/2.5/weather?q=Montreal&appid=9ee255b8e671643ab089e28c1ef7a303").json()
+    return requests.get(url.format("Montreal")).json()
 
 '''
 takes as input a city name and returns the openweather response for that city
 '''
 def requestCity(name):
-    url = "http://api.openweathermap.org/data/2.5/weather?q={}&appid=9ee255b8e671643ab089e28c1ef7a303"
-    url = url.format(name)
-    return requests.get(url).json()
+    return requests.get(url.format(name)).json()

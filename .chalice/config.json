@@ -3,7 +3,13 @@
   "app_name": "weather-app",
   "stages": {
     "dev": {
-      "api_gateway_stage": "api"
+      "api_gateway_stage": "api",
+      "autogen_policy": false,
+      "environment_variables": {
+        "s3_bucket": "weather-app-data",
+        "url": "http://api.openweathermap.org/data/2.5/weather?",
+        "api_key": "appid=9ee255b8e671643ab089e28c1ef7a303"
+      }
     }
   }
 }
