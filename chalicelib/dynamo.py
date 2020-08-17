@@ -17,7 +17,7 @@ def get(id):
 gets the latest record from the table
 '''
 def getLatest():
-    response = table.scan(Limit=1, Select='ALL_ATTRIBUTES')
+    response = table.scan(Limit=1, Select='ALL_ATTRIBUTES', ConsistentRead=True)
     return response['Items'][0]
 
 '''
