@@ -3,9 +3,11 @@ from chalicelib import req, dynamo
 import boto3
 import time
 import json
+import os
 
 app = Chalice(app_name='weather-app')
 s3 = boto3.client('s3', region_name='ca-central-1')
+bucket = os.environ["s3_bucket"]
 
 '''
 Return Weather Data for Montreal
@@ -37,18 +39,18 @@ def periodic_task(event):
     f.write(json.dumps(data))
     f.close()
 
-    s3.upload_file("/tmp/weatherdata", "weather-app-data", name)
+    s3.upload_file("/tmp/weatherdata", bucket, name)
 '''
 Whenever weather data is uploaded to S3, insert it into dynamo DB
 '''
-@app.on_s3_event(bucket='weather-app-data')
+@app.on_s3_event(bucket=bucket)
 def file_uploaded(event):
     objName = event.key
     data = "{}"
 
     try:
         with open('/tmp/weatherdownload', 'wb') as f:
-            s3.download_fileobj('weather-app-data', objName, f)
+            s3.download_fileobj(bucket, objName, f)
     
         with open('/tmp/weatherdownload', 'r') as f:
             data = json.loads(f.read())
