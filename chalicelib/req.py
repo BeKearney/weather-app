@@ -28,8 +28,9 @@ def requestUrl(address):
 returns parsed weather data for the specified city
 '''
 def requestCityParsed(name):
-    data = requests.get(url.format(name)).json()
-    Item={
+    try:
+        data = requests.get(url.format(name)).json()
+        Item={
             'city': data['name'],
             'description': data['weather'][0]['description'],
             'icon': data['weather'][0]['icon'],
@@ -41,4 +42,6 @@ def requestCityParsed(name):
             'weather': data['weather'][0]['main'],
             'country': data['sys']['country']
         }
+    except:
+        return requestCityParsed('Montreal')
     return Item

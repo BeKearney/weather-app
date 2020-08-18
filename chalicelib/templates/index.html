@@ -2,12 +2,23 @@
 
 {% block content %}
 <div id="content">
-    <h1>{{ data.city }}, {{ data.country }}</h1>
-    <h2>{{ data.description }}</h2>
-    <img src=http://openweathermap.org/img/wn/{{ data.icon }}@4x.png>
-    <h1 id="temp">{{ data.temp }}&deg;C</h1>
-    <h1>Feels Like {{ data.feel }}&deg;C</h1>
-    <h2>High {{ data.high }}&deg;C</h2>
-    <h2>Low {{ data.low }}&deg;C</h2>
+    <table>
+        <tr>
+            <td colspan="2"><h1>{{ data.city }}, {{ data.country }}</h1></td>
+        </tr>
+        <tr>
+            <td colspan="2"><h2>High {{ data.high }}&deg;C&nbsp;&nbsp;&nbsp;&nbsp;Low {{ data.low }}&deg;C</h2></td>
+        </tr>
+        <tr>
+            <td><img src=http://openweathermap.org/img/wn/{{ data.icon }}@4x.png></td>
+            <td><h1 id="temp">{{ data.temp }}&deg;C</h1></td>
+        </tr>
+        <tr>
+            <td><h2>{{ data.description }}</h2></td>
+            <td><h1>Feels Like {{ data.feel }}&deg;C</h1></td>
+        </tr>
+        <tr>
+        </tr>
+    </table>
 </div>
 {% endblock %}
