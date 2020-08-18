@@ -8,7 +8,7 @@
       "environment_variables": {
         "s3_bucket": "weather-app-data",
         "url": "http://api.openweathermap.org/data/2.5/weather?",
-        "api_key": "appid=9ee255b8e671643ab089e28c1ef7a303"
+        "api_key": "appid=541ac9821374accfdb5c5615e48e2413"
       }
     }
   }
