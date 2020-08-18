@@ -24,6 +24,14 @@ Return Latest Montreal Weather from Dynamo
 def current_weather():
     return dynamo.getLatest()
 '''
+Return Weather website for the City defined in the Route
+'''
+@app.route('/{city}')
+def siteByCityName(city):
+    context = {'data': req.requestCityParsed(city)}
+    template = jin.render("chalicelib/templates/index.html", context)    
+    return Response(template, status_code=200, headers={"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"})
+'''
 Return Weather Data for the City defined in the Route
 '''
 @app.route('/json/{city}')
