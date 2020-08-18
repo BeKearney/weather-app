@@ -17,3 +17,9 @@ takes as input a city name and returns the openweather response for that city
 '''
 def requestCity(name):
     return requests.get(url.format(name)).json()
+
+'''
+returns the response for a given url
+'''
+def requestUrl(address):
+    return requests.get(address).json()

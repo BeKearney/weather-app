@@ -14,7 +14,10 @@ bucket = os.environ["s3_bucket"]
 '''
 @app.route('/')
 def index():
-    context = {'data': current_weather()}
+    data = current_weather()
+    iconURL = "http://openweathermap.org/img/wn/{}@2x.png"
+    iconURL = iconURL.format(data['icon'])
+    context = {'data': current_weather(), 'icon': iconURL}
     template = jin.render("chalicelib/templates/index.html", context)    
     return Response(template, status_code=200, headers={"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"})
 '''
