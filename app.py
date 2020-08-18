@@ -1,5 +1,5 @@
-from chalice import Chalice, Rate
-from chalicelib import req, dynamo
+from chalice import Chalice, Rate, Response
+from chalicelib import req, dynamo, jin
 import boto3
 import time
 import json
@@ -10,11 +10,13 @@ s3 = boto3.client('s3', region_name='ca-central-1')
 bucket = os.environ["s3_bucket"]
 
 '''
-Return Weather Data for Montreal
+Return Website with most recent weather data for Montreal from Dynamo
 '''
 @app.route('/')
 def index():
-    return req.request()
+    context = {'data': dynamo.getLatest()}
+    template = jin.render("chalicelib/templates/index.html", context)    
+    return Response(template, status_code=200, headers={"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"})
 '''
 Return Latest Montreal Weather from Dynamo
 '''
@@ -22,9 +24,17 @@ Return Latest Montreal Weather from Dynamo
 def current_weather():
     return dynamo.getLatest()
 '''
-Return Weather Data for the City defined in the Route
+Return Weather website for the City defined in the Route
 '''
 @app.route('/{city}')
+def siteByCityName(city):
+    context = {'data': req.requestCityParsed(city)}
+    template = jin.render("chalicelib/templates/index.html", context)    
+    return Response(template, status_code=200, headers={"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"})
+'''
+Return Weather Data for the City defined in the Route
+'''
+@app.route('/json/{city}')
 def weatherByCityName(city):
     return req.requestCity(city)
 '''

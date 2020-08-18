@@ -17,3 +17,31 @@ takes as input a city name and returns the openweather response for that city
 '''
 def requestCity(name):
     return requests.get(url.format(name)).json()
+
+'''
+returns the response for a given url
+'''
+def requestUrl(address):
+    return requests.get(address).json()
+
+'''
+returns parsed weather data for the specified city
+'''
+def requestCityParsed(name):
+    try:
+        data = requests.get(url.format(name)).json()
+        Item={
+            'city': data['name'],
+            'description': data['weather'][0]['description'],
+            'icon': data['weather'][0]['icon'],
+            'feel': round(data['main']['feels_like'] - 273),
+            'high': round(data['main']['temp_max'] - 273),
+            'humidity': data['main']['humidity'],
+            'low': round(data['main']['temp_min'] - 273),
+            'temp': round(data['main']['temp'] - 273),
+            'weather': data['weather'][0]['main'],
+            'country': data['sys']['country']
+        }
+    except:
+        return requestCityParsed('Montreal')
+    return Item
