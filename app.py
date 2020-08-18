@@ -4,6 +4,7 @@ import boto3
 import time
 import json
 import os
+import xmltodict
 
 app = Chalice(app_name='weather-app')
 s3 = boto3.client('s3', region_name='ca-central-1')
@@ -37,6 +38,10 @@ Return Weather Data for the City defined in the Route
 @app.route('/json/{city}')
 def weatherByCityName(city):
     return req.requestCity(city)
+
+@app.route('/xml')
+def weatherXML():
+    return xmltodict.parse(req.requestXML('Montreal'))
 '''
 Uploads curent weather data to S3 every minute
 '''
