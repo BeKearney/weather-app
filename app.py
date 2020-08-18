@@ -10,22 +10,13 @@ s3 = boto3.client('s3', region_name='ca-central-1')
 bucket = os.environ["s3_bucket"]
 
 '''
-
+Return Website with most recent weather data for Montreal from Dynamo
 '''
 @app.route('/')
 def index():
-    data = current_weather()
-    iconURL = "http://openweathermap.org/img/wn/{}@2x.png"
-    iconURL = iconURL.format(data['icon'])
-    context = {'data': current_weather(), 'icon': iconURL}
+    context = {'data': dynamo.getLatest()}
     template = jin.render("chalicelib/templates/index.html", context)    
     return Response(template, status_code=200, headers={"Content-Type": "text/html", "Access-Control-Allow-Origin": "*"})
-'''
-Return Weather Data for Montreal
-'''
-@app.route('/d')
-def default():
-    return req.request()
 '''
 Return Latest Montreal Weather from Dynamo
 '''
@@ -35,7 +26,7 @@ def current_weather():
 '''
 Return Weather Data for the City defined in the Route
 '''
-@app.route('/{city}')
+@app.route('/json/{city}')
 def weatherByCityName(city):
     return req.requestCity(city)
 '''
