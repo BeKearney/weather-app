@@ -21,4 +21,14 @@
         </tr>
     </table>
 </div>
+<div id="search">
+    <input type="text" id="city"/><button id="btn">Search</button>
+</div>
+<script>
+    document.getElementById("btn").addEventListener("click", search);
+    function search(){
+        city = document.getElementById("city").value;
+        window.location.href = window.location.origin + "/api/" + city
+    }
+</script>
 {% endblock %}
